@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ألياف الشمال — قائمة أسعار الخضار المقطّعة</title>
+<meta name="description" content="قائمة أسعار خضار مقطّعة وجاهزة للاستخدام للمطاعم. تسليم يومي داخل عمّان، صلاحية 7 أيام من تاريخ الإنتاج.">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ألياف الشمال">
+<meta property="og:locale" content="ar_JO">
+<meta property="og:title" content="ألياف الشمال — قائمة أسعار الخضار المقطّعة">
+<meta property="og:description" content="خضار مقطّعة جاهزة للمطاعم. تسليم يومي داخل عمّان، صلاحية 7 أيام، الطلب قبل يوم من التوصيل.">
+<meta property="og:url" content="[[https://qays7753.github.io/Alyaf-Alshamal/]]">
+<meta property="og:image" content="[[https://qays7753.github.io/Alyaf-Alshamal/]]assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ألياف الشمال — قائمة أسعار الخضار المقطّعة">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brand:        #0E3D24;
+    --brand-tint:   #E9F0EA;
+    --whatsapp:     #25D366;
+    --whatsapp-hov: #1FB558;
+    --paper:        #FFFFFF;
+    --surface:      #F4F6F1;
+    --band:         #F3F6F1;
+    --rule:         #E3E7DF;
+    --text:         #14201A;
+    --text-soft:    #4B5563;
+  }
+
+  html { background: var(--surface); }
+
+  body {
+    font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    line-height: 1.55;
+    padding: 18px 14px 36px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 460px;
+    margin-inline: auto;
+    background: var(--paper);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(14, 61, 36, .08), 0 2px 6px rgba(0, 0, 0, .04);
+  }
+
+  /* ---------- الترويسة ---------- */
+  .masthead {
+    background: var(--brand);
+    color: #fff;
+    text-align: center;
+    padding: 30px 22px 26px;
+  }
+  .masthead img {
+    width: 138px;
+    height: auto;
+    display: block;
+    margin-inline: auto;
+    margin-bottom: 16px;
+    background: #fff;
+    padding: 12px 16px;
+    border-radius: 14px;
+  }
+  .wordmark { font-size: 30px; font-weight: 700; letter-spacing: -.5px; }
+  .descriptor { font-size: 14.5px; opacity: .92; margin-top: 4px; }
+
+  .service-notes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 16px;
+  }
+  .service-notes span {
+    border: 1px solid rgba(255, 255, 255, .28);
+    background: rgba(255, 255, 255, .1);
+    border-radius: 999px;
+    padding: 5px 13px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* ---------- الكتالوج ---------- */
+  .catalogue { padding: 6px 16px 4px; }
+
+  .group + .group { margin-top: 34px; }
+  .group:first-child { margin-top: 22px; }
+
+  .group-heading {
+    font-size: 17.5px;
+    font-weight: 700;
+    color: var(--brand);
+    padding-bottom: 9px;
+    margin-bottom: 6px;
+    border-bottom: 2px solid var(--brand);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .group-heading::before {
+    content: "";
+    width: 5px;
+    height: 20px;
+    background: var(--brand);
+    border-radius: 1px;
+  }
+
+  .group ul { list-style: none; }
+
+  .line {
+    display: grid;
+    grid-template-columns: 1fr auto 74px;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 10px;
+    border-radius: 6px;
+  }
+  .line:nth-child(even) { background: var(--band); }
+
+  .name { font-size: 15.5px; font-weight: 600; min-width: 0; }
+
+  .qty {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-soft);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    direction: ltr;
+    justify-self: end;
+  }
+  .line:nth-child(odd) .qty { background: var(--band); }
+
+  .price {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--brand);
+    text-align: left;
+    direction: ltr;
+    font-variant-numeric: tabular-nums;
+    border-inline-start: 1px solid var(--rule);
+    padding-inline-start: 12px;
+  }
+
+  /* ---------- شروط الخدمة ---------- */
+  .service-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 26px 16px 0;
+  }
+  .service-grid div {
+    background: var(--brand-tint);
+    color: var(--brand);
+    border-radius: 10px;
+    padding: 11px 13px;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+
+  /* ---------- العيّنة المجانية ---------- */
+  .trial {
+    margin: 26px 16px 0;
+    background: var(--brand);
+    color: #fff;
+    border-radius: 12px;
+    padding: 20px 18px;
+    text-align: center;
+  }
+  .trial h2 { font-size: 19px; font-weight: 700; }
+  .trial p {
+    font-size: 13px;
+    font-weight: 400;
+    opacity: .9;
+    margin: 7px 0 15px;
+    line-height: 1.6;
+  }
+  .trial-cta {
+    display: block;
+    background: #fff;
+    color: var(--brand);
+    text-decoration: none;
+    font-size: 16.5px;
+    font-weight: 700;
+    padding: 14px 18px;
+    border-radius: 10px;
+  }
+
+  /* ---------- الطلب ---------- */
+  .order { padding: 14px 16px 4px; }
+  .order a {
+    display: block;
+    background: var(--whatsapp);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 15px 18px;
+    border-radius: 12px;
+  }
+  .order a:hover { background: var(--whatsapp-hov); }
+  .order .tel {
+    text-align: center;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    direction: ltr;
+    margin-top: 11px;
+  }
+  .order .tel-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-soft);
+    margin-top: 2px;
+  }
+
+  /* ---------- التذييل ---------- */
+  .closing { padding: 20px 16px 24px; }
+
+  .policy {
+    background: var(--surface);
+    border-inline-start: 3px solid var(--brand);
+    border-radius: 8px;
+    padding: 13px 15px;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-soft);
+  }
+  .policy b {
+    display: block;
+    color: var(--brand);
+    font-size: 12.5px;
+    margin-bottom: 4px;
+  }
+
+  .currency-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-soft);
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+  }
+
+  @media (min-width: 600px) {
+    body { padding: 32px 20px 60px; }
+  }
+
+  @media print {
+    body { padding: 16px 14px 20px; }
+    .sheet { box-shadow: none; }
+    .order a { color: #fff; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <img src="assets/logo.png" alt="ألياف الشمال">
+    <div class="wordmark">ألياف الشمال</div>
+    <p class="descriptor">خضار طازة مقطّعة وجاهزة للاستخدام</p>
+    <div class="service-notes">
+      <span>نخدم مطاعم كل الأردن</span>
+      <span>تسليم يومي داخل عمّان</span>
+      <span>عيّنة مجانية للتجربة</span>
+    </div>
+  </header>
+
+  <section class="catalogue">
+
+    <div class="group">
+      <h2 class="group-heading">ورقيات وخس</h2>
+      <ul>
+        <li class="line"><span class="name">خس شرحات</span><span class="qty">1kg</span><span class="price">1.20</span></li>
+        <li class="line"><span class="name">خس سلطة</span><span class="qty">1kg</span><span class="price">1.20</span></li>
+        <li class="line"><span class="name">خس آيسبرغ</span><span class="qty">حبة</span><span class="price">0.65</span></li>
+        <li class="line"><span class="name">لولو بيندا</span><span class="qty">100g</span><span class="price">0.55</span></li>
+        <li class="line"><span class="name">لولو روسو</span><span class="qty">100g</span><span class="price">0.55</span></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h2 class="group-heading">ملفوف</h2>
+      <ul>
+        <li class="line"><span class="name">ملفوف شرحات</span><span class="qty">1kg</span><span class="price">0.50</span></li>
+        <li class="line"><span class="name">ملفوف أحمر</span><span class="qty">200g</span><span class="price">0.55</span></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h2 class="group-heading">بصل وجذور</h2>
+      <ul>
+        <li class="line"><span class="name">بصل مقطّع</span><span class="qty">0.5kg</span><span class="price">0.65</span></li>
+        <li class="line"><span class="name">جزر شرحات</span><span class="qty">200g</span><span class="price">0.40</span></li>
+        <li class="line"><span class="name">جزر شرحات</span><span class="qty">1kg</span><span class="price">1.50</span></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h2 class="group-heading">أعشاب ومورقات</h2>
+      <ul>
+        <li class="line"><span class="name">ريحان</span><span class="qty">50g</span><span class="price">0.75</span></li>
+        <li class="line"><span class="name">بيبي ليڤز</span><span class="qty">200g</span><span class="price">2.25</span></li>
+        <li class="line"><span class="name">بقدونس مفروم</span><span class="qty">0.5kg</span><span class="price">1.00</span></li>
+        <li class="line"><span class="name">جرجير</span><span class="qty">100g</span><span class="price">0.45</span></li>
+        <li class="line"><span class="name">سبانخ</span><span class="qty">200g</span><span class="price">0.60</span></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h2 class="group-heading">فلفل وبندورة وفطر</h2>
+      <ul>
+        <li class="line"><span class="name">فلفل حلو</span><span class="qty">0.5kg</span><span class="price">0.75</span></li>
+        <li class="line"><span class="name">فلفل حار</span><span class="qty">0.5kg</span><span class="price">0.60</span></li>
+        <li class="line"><span class="name">بندورة</span><span class="qty">1kg</span><span class="price">0.65</span></li>
+        <li class="line"><span class="name">بندورة كرزية</span><span class="qty">250g</span><span class="price">0.50</span></li>
+        <li class="line"><span class="name">فطر مقطّع</span><span class="qty">250g</span><span class="price">1.25</span></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <section class="service-grid">
+    <div>توصيل يومي داخل عمّان</div>
+    <div>صلاحية 7 أيام</div>
+    <div>استبدال عيوب الإنتاج</div>
+    <div>الطلب قبل يوم من التوصيل</div>
+  </section>
+
+  <section class="trial">
+    <h2>عيّنة مجانية قبل ما تطلب</h2>
+    <p>اختر أي صنف من القائمة ونوصّله لمطبخك للتجربة، بدون أي التزام بالشراء.</p>
+    <a class="trial-cta" href="https://wa.me/962777717753?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D8%8C%20%D8%A8%D8%AF%D9%8A%20%D8%A3%D8%B7%D9%84%D8%A8%20%D8%B9%D9%8A%D9%91%D9%86%D8%A9%20%D9%85%D8%AC%D8%A7%D9%86%D9%8A%D8%A9%20%D9%84%D9%84%D8%AA%D8%AC%D8%B1%D8%A8%D8%A9.%0A%D8%A7%D8%B3%D9%85%20%D8%A7%D9%84%D9%85%D8%B7%D8%B9%D9%85%3A%0A%D8%A7%D9%84%D9%85%D9%86%D8%B7%D9%82%D8%A9%3A%0A%D8%A7%D9%84%D8%A3%D8%B5%D9%86%D8%A7%D9%81%20%D8%A7%D9%84%D9%84%D9%8A%20%D8%A8%D8%B3%D8%AA%D9%87%D9%84%D9%83%D9%87%D8%A7%20%D8%A3%D8%B3%D8%A8%D9%88%D8%B9%D9%8A%D8%A7%D9%8B%3A" target="_blank" rel="noopener">اطلب عيّنة مجانية</a>
+  </section>
+
+  <section class="order">
+    <a href="https://wa.me/962777717753?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D8%8C%20%D8%A8%D8%AF%D9%8A%20%D8%A3%D8%B3%D8%AA%D9%81%D8%B3%D8%B1%20%D8%B9%D9%86%20%D8%A7%D9%84%D8%B7%D9%84%D8%A8%20%D9%88%D8%A7%D9%84%D8%A3%D8%B3%D8%B9%D8%A7%D8%B1." target="_blank" rel="noopener">اطلب الآن عبر واتساب</a>
+    <p class="tel">0777717753</p>
+    <p class="tel-note">اضغط الزر أو اتصل مباشرة</p>
+  </section>
+
+  <footer class="closing">
+    <div class="policy">
+      <b>الاستبدال والتخزين</b>
+      نستبدل أي منتج فيه خلل من الإنتاج أو تلف قبل التسليم، خلال مدة الصلاحية (7 أيام).
+      يشترط حفظ المنتج على درجة 2–4°م من لحظة الاستلام. التلف الناتج عن انقطاع التبريد
+      أو التجميد خارج فترة مسؤوليتنا.
+    </div>
+    <p class="currency-note">جميع الأسعار بالدينار الأردني</p>
+  </footer>
+
+</main>
+</body>
+</html>
