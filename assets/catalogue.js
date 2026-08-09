@@ -9,6 +9,14 @@
   var root = document.getElementById("catalogue");
   if (!root) return;
 
+  // عمود الصورة محجوز للجميع ما دام في كبسة واحدة على الأقل،
+  // حتى تبقى كل الأعمدة على استقامة واحدة بين الصفوف
+  var hasImages = window.allItems().some(function (i) {
+    return (i.images || []).length > 0;
+  });
+  var showPhotoCol = !window.HIDE_EMPTY_IMAGE_BUTTONS || hasImages;
+  if (!showPhotoCol) root.classList.add("no-photo-col");
+
   window.CATALOGUE.forEach(function (group) {
     var section = document.createElement("div");
     section.className = "group";
@@ -17,6 +25,14 @@
     heading.className = "group-heading";
     heading.textContent = group.group;
     section.appendChild(heading);
+
+    // سطر عناوين الأعمدة: يوضّح للزبون معنى عمود التغليف
+    var head = document.createElement("div");
+    head.className = "line-head";
+    head.innerHTML =
+      (showPhotoCol ? "<span></span>" : "") +
+      "<span>الصنف</span><span>التغليف</span><span>السعر / كغ</span>";
+    section.appendChild(head);
 
     var list = document.createElement("ul");
 
@@ -41,10 +57,10 @@
     var li = document.createElement("li");
     li.className = "line";
 
-    // 1) كبسة الصورة
-    var btn = window.Gallery.createButton(item);
-    if (btn) li.appendChild(btn);
-    else li.classList.add("no-photo");
+    // 1) كبسة الصورة — أو خانة فارغة تحفظ محاذاة الأعمدة
+    if (showPhotoCol) {
+      li.appendChild(window.Gallery.createButton(item) || document.createElement("span"));
+    }
 
     // 2) اسم الصنف
     var name = document.createElement("div");

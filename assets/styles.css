@@ -132,30 +132,47 @@ button { font: inherit; color: inherit; }
 
 .group ul { list-style: none; }
 
-.line {
+/* أعمدة ثابتة العرض حتى تبقى كل الصفوف على استقامة واحدة */
+.line, .line-head {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) auto auto;
+  grid-template-columns: 40px minmax(0, 1fr) 54px 92px;
   align-items: center;
   gap: 9px;
   padding: 10px 8px;
-  border-radius: 8px;
 }
+.no-photo-col .line,
+.no-photo-col .line-head { grid-template-columns: minmax(0, 1fr) 54px 92px; }
+
+.line { border-radius: 8px; }
 .line:nth-child(even) { background: var(--band); }
-.line.no-photo { grid-template-columns: minmax(0, 1fr) auto auto; }
 
-.name { font-size: 15px; font-weight: 600; min-width: 0; }
+/* سطر عناوين الأعمدة */
+.line-head {
+  padding-top: 8px;
+  padding-bottom: 7px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #93A09A;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2px;
+}
+.line-head span:nth-last-child(2) { text-align: center; }
+.line-head span:last-child { text-align: left; }
 
-/* عمود الأحجام المتوفّرة */
-.sizes { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+.name { font-size: 14.5px; font-weight: 600; min-width: 0; }
+
+/* عمود التغليف */
+.sizes { display: flex; flex-direction: column; align-items: center; gap: 3px; }
 .size {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-soft);
   background: var(--paper);
   border: 1px solid var(--rule);
-  border-radius: 6px;
-  padding: 3px 8px;
+  border-radius: 5px;
+  padding: 2px 7px;
   white-space: nowrap;
+  line-height: 1.5;
 }
 .line:nth-child(odd) .size { background: var(--band); }
 .size bdi { font-weight: 700; }
@@ -163,21 +180,24 @@ button { font: inherit; color: inherit; }
 /* سعر الكيلو مع الوحدة على جنبه */
 .price {
   text-align: left;
-  border-inline-start: 1px solid var(--rule);
-  padding-inline-start: 10px;
   white-space: nowrap;
+  border-inline-start: 1px solid var(--rule);
+  padding-inline-start: 12px;
 }
 .price b {
-  font-size: 18.5px;
+  display: inline-block;
+  min-width: 45px;
+  text-align: right;
+  font-size: 18px;
   font-weight: 700;
   color: var(--brand);
   font-variant-numeric: tabular-nums;
 }
 .price small {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 600;
   color: var(--text-soft);
-  margin-inline-start: 3px;
+  margin-inline-start: 4px;
 }
 
 /* ---------- كبسة الصورة ---------- */
@@ -371,47 +391,50 @@ button { font: inherit; color: inherit; }
   text-align: center;
   gap: 5px;
   text-decoration: none;
-  border-radius: 13px;
-  padding: 17px 12px 16px;
-  background: var(--brand-tint);
-  color: var(--brand);
-  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 18px 12px 17px;
+  color: #fff;
 }
-.dual-card.is-primary { background: var(--brand); color: #fff; }
-.dual-card:not(.is-primary) { border-color: var(--rule); }
+.dual-card.is-primary { background: var(--brand); }
+.dual-card.is-sample  { background: var(--whatsapp); }
+.dual-card.is-sample:hover { background: var(--whatsapp-hov); }
+.dual-card.is-primary:hover { background: var(--brand-soft); }
 .dual-card svg { width: 26px; height: 26px; margin-bottom: 2px; }
 .dual-title { font-size: 15px; font-weight: 700; line-height: 1.3; }
-.dual-sub { font-size: 11.5px; font-weight: 500; opacity: .82; line-height: 1.45; }
+.dual-sub { font-size: 11.5px; font-weight: 500; opacity: .88; line-height: 1.45; }
 
 /* ---------- التواصل المباشر ---------- */
-.direct { text-align: center; padding: 20px 16px 0; }
+.direct { text-align: center; padding: 12px 16px 0; }
 .direct-label {
   font-size: 11.5px;
   font-weight: 500;
   color: var(--text-soft);
-  margin-bottom: 5px;
+  margin-bottom: 7px;
 }
 .direct-tel {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 7px;
+  justify-content: center;
+  gap: 9px;
+  border: 1.5px solid var(--brand);
+  border-radius: 12px;
+  padding: 12px 18px;
   color: var(--brand);
   text-decoration: none;
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: .5px;
 }
+.direct-tel:hover { background: var(--brand-tint); }
 .direct-tel svg { width: 17px; height: 17px; flex: none; }
 .direct-tel span { direction: ltr; }
-.direct-wa {
-  display: block;
-  margin-top: 6px;
-  color: var(--whatsapp-hov);
-  font-size: 12.5px;
-  font-weight: 600;
-  text-decoration: none;
+.direct-note {
+  margin-top: 7px;
+  font-size: 11.5px;
+  color: var(--text-soft);
 }
-.direct-wa:hover { text-decoration: underline; }
+.direct-note a { color: var(--whatsapp-hov); font-weight: 700; text-decoration: none; }
+.direct-note a:hover { text-decoration: underline; }
 
 /* ---------- التذييل ---------- */
 .closing { padding: 20px 16px 24px; }
@@ -672,8 +695,8 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
 @media print {
   body { padding: 16px 14px 20px; }
   .sheet { box-shadow: none; }
-  .direct-tel, .direct-wa { color: var(--brand); }
+  .direct-tel { color: var(--brand); }
   .photo-btn, .photo-hint, .lightbox { display: none !important; }
-  .line { grid-template-columns: 1fr auto auto; }
+  .line, .line-head { grid-template-columns: minmax(0, 1fr) 54px 92px; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
