@@ -325,35 +325,16 @@ button { font: inherit; color: inherit; }
   font-weight: 600;
 }
 
-/* ---------- تنويه أن السعر يتغيّر حسب التفاصيل ---------- */
+/* ---------- حاشية: الأسعار إرشادية ---------- */
 .price-note {
-  margin: 24px 16px 0;
-  background: var(--brand-tint);
-  border: 1px solid rgba(14, 61, 36, .16);
-  border-radius: 12px;
-  padding: 15px 16px;
-}
-.price-note b {
-  display: block;
-  color: var(--brand);
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-.price-note p {
-  font-size: 12.3px;
-  line-height: 1.7;
+  margin: 16px 16px 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.2px;
+  line-height: 1.75;
   color: var(--text-soft);
 }
-.price-note a {
-  display: inline-block;
-  margin-top: 10px;
-  color: var(--brand);
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-  border-bottom: 2px solid var(--brand);
-  padding-bottom: 1px;
-}
+.price-note b { color: var(--brand); font-weight: 700; }
 
 .explainer {
   margin: 18px 16px 0;
@@ -379,7 +360,9 @@ button { font: inherit; color: inherit; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 9px;
-  padding: 22px 16px 0;
+  margin: 30px 16px 0;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule);
 }
 .dual-card {
   display: flex;
@@ -400,34 +383,35 @@ button { font: inherit; color: inherit; }
 .dual-title { font-size: 15px; font-weight: 700; line-height: 1.3; }
 .dual-sub { font-size: 11.5px; font-weight: 500; opacity: .82; line-height: 1.45; }
 
-/* ---------- الطلب ---------- */
-.order { padding: 14px 16px 4px; }
-.order a {
-  display: block;
-  background: var(--whatsapp);
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 15px 18px;
-  border-radius: 12px;
-}
-.order a:hover { background: var(--whatsapp-hov); }
-.order .tel {
-  text-align: center;
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  direction: ltr;
-  margin-top: 11px;
-}
-.order .tel-note {
-  text-align: center;
+/* ---------- التواصل المباشر ---------- */
+.direct { text-align: center; padding: 20px 16px 0; }
+.direct-label {
   font-size: 11.5px;
+  font-weight: 500;
   color: var(--text-soft);
-  margin-top: 2px;
+  margin-bottom: 5px;
 }
+.direct-tel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--brand);
+  text-decoration: none;
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+.direct-tel svg { width: 17px; height: 17px; flex: none; }
+.direct-tel span { direction: ltr; }
+.direct-wa {
+  display: block;
+  margin-top: 6px;
+  color: var(--whatsapp-hov);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.direct-wa:hover { text-decoration: underline; }
 
 /* ---------- التذييل ---------- */
 .closing { padding: 20px 16px 24px; }
@@ -688,7 +672,7 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
 @media print {
   body { padding: 16px 14px 20px; }
   .sheet { box-shadow: none; }
-  .order a { color: #fff; }
+  .direct-tel, .direct-wa { color: var(--brand); }
   .photo-btn, .photo-hint, .lightbox { display: none !important; }
   .line { grid-template-columns: 1fr auto auto; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
