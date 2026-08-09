@@ -134,51 +134,50 @@ button { font: inherit; color: inherit; }
 
 .line {
   display: grid;
-  grid-template-columns: 46px 1fr auto;
+  grid-template-columns: 42px minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 11px;
-  padding: 10px;
+  gap: 9px;
+  padding: 10px 8px;
   border-radius: 8px;
 }
 .line:nth-child(even) { background: var(--band); }
+.line.no-photo { grid-template-columns: minmax(0, 1fr) auto auto; }
 
-.line-main { min-width: 0; }
-.name { font-size: 15.5px; font-weight: 600; }
+.name { font-size: 15px; font-weight: 600; min-width: 0; }
 
-.packs {
-  font-size: 11.8px;
-  font-weight: 500;
+/* عمود الأحجام المتوفّرة */
+.sizes { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+.size {
+  font-size: 11.5px;
+  font-weight: 600;
   color: var(--text-soft);
-  margin-top: 2px;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 3px 8px;
+  white-space: nowrap;
 }
-.packs span { white-space: nowrap; }
-.packs bdi { font-weight: 600; }
+.line:nth-child(odd) .size { background: var(--band); }
+.size bdi { font-weight: 700; }
 
-.line.no-photo, .pick.no-photo { grid-template-columns: 1fr auto; }
-
+/* سعر الكيلو مع الوحدة على جنبه */
 .price {
   text-align: left;
   border-inline-start: 1px solid var(--rule);
-  padding-inline-start: 11px;
-  min-width: 78px;
+  padding-inline-start: 10px;
+  white-space: nowrap;
 }
 .price b {
-  display: block;
-  font-size: 19px;
+  font-size: 18.5px;
   font-weight: 700;
   color: var(--brand);
-  direction: ltr;
   font-variant-numeric: tabular-nums;
-  line-height: 1.15;
 }
 .price small {
-  display: block;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-soft);
+  margin-inline-start: 3px;
 }
 
 /* ---------- كبسة الصورة ---------- */
@@ -326,6 +325,55 @@ button { font: inherit; color: inherit; }
   font-weight: 600;
 }
 
+/* ---------- تنويه أن السعر يتغيّر حسب التفاصيل ---------- */
+.price-note {
+  margin: 24px 16px 0;
+  background: var(--brand-tint);
+  border: 1px solid rgba(14, 61, 36, .16);
+  border-radius: 12px;
+  padding: 15px 16px;
+}
+.price-note b {
+  display: block;
+  color: var(--brand);
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.price-note p {
+  font-size: 12.3px;
+  line-height: 1.7;
+  color: var(--text-soft);
+}
+.price-note a {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--brand);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 2px solid var(--brand);
+  padding-bottom: 1px;
+}
+
+.explainer {
+  margin: 18px 16px 0;
+  background: var(--brand-tint);
+  border-inline-start: 3px solid var(--brand);
+  border-radius: 10px;
+  padding: 14px 15px;
+}
+.explainer b {
+  display: block;
+  color: var(--brand);
+  font-size: 13.5px;
+  margin-bottom: 5px;
+}
+.explainer p {
+  font-size: 12.3px;
+  line-height: 1.75;
+  color: var(--text-soft);
+}
+
 /* ---------- بطاقتان: عرض سعر + عيّنة مجانية ---------- */
 .dual {
   display: grid;
@@ -456,88 +504,98 @@ button { font: inherit; color: inherit; }
   margin: 8px 0 2px;
 }
 
-.q-block + .q-block { margin-top: 18px; }
-.q-label { font-size: 13.5px; font-weight: 700; margin-bottom: 8px; }
-.q-label .q-opt { font-size: 11px; font-weight: 500; color: var(--text-soft); }
+/* ---------- حقول القوائم المنسدلة ---------- */
 
-.chips { display: flex; flex-wrap: wrap; gap: 7px; }
-.chip {
-  border: 1px solid var(--rule);
-  background: var(--paper);
-  border-radius: 999px;
-  padding: 7px 14px;
+.field + .field { margin-top: 15px; }
+.field-label {
+  display: block;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text);
-  cursor: pointer;
-  line-height: 1.35;
+  margin-bottom: 6px;
 }
-.chip[aria-pressed="true"] {
-  background: var(--brand);
-  border-color: var(--brand);
-  color: #fff;
-}
-.chip:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 
-/* صفوف الأصناف في صفحة الطلب */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+  color: var(--text);
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234B5563' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  border: 1px solid var(--rule);
+  cursor: pointer;
+}
+select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; border-color: var(--brand); }
+
+.field-select {
+  width: 100%;
+  border-radius: 11px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 14px;
+  padding-inline-end: 38px;
+  background-position: left 13px center;
+}
+.field-select.is-empty { color: #93A09A; font-weight: 500; }
+.field-select:not(.is-empty) { border-color: rgba(14, 61, 36, .35); background-color: var(--brand-tint); }
+
+/* ---------- صفوف الأصناف في صفحة الطلب ---------- */
+
 .pick {
   display: grid;
-  grid-template-columns: 46px 1fr auto;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 11px;
-  padding: 10px;
+  gap: 10px;
+  padding: 9px 8px;
   border-radius: 9px;
   border: 1px solid transparent;
 }
+.pick.no-photo { grid-template-columns: minmax(0, 1fr) auto; }
 .pick:nth-child(even) { background: var(--band); }
 .pick.is-on {
   background: var(--brand-tint);
   border-color: rgba(14, 61, 36, .22);
 }
 .pick-main { min-width: 0; }
-.pick-name { font-size: 15px; font-weight: 600; }
-.pick-meta {
+.pick-name { font-size: 14.5px; font-weight: 600; }
+
+.pick-size {
   font-size: 11.5px;
-  color: var(--text-soft);
   font-weight: 500;
+  color: var(--text-soft);
   margin-top: 1px;
 }
-.pick-meta bdi { font-weight: 600; }
 
-.pack-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
-.pack-chip {
-  border: 1px solid var(--rule);
-  background: var(--paper);
-  border-radius: 7px;
-  padding: 4px 9px;
-  font-size: 11.5px;
+.size-select {
+  margin-top: 5px;
+  border-radius: 8px;
+  font-size: 12px;
   font-weight: 600;
-  cursor: pointer;
-  direction: ltr;
-}
-.pack-chip[aria-pressed="true"] {
-  background: var(--brand);
-  border-color: var(--brand);
-  color: #fff;
+  padding: 5px 10px;
+  padding-inline-end: 27px;
+  background-position: left 8px center;
+  background-size: 13px 13px;
 }
 
 .stepper {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   background: var(--paper);
   border: 1px solid var(--rule);
-  border-radius: 9px;
+  border-radius: 10px;
   padding: 3px;
 }
-.stepper button {
-  width: 30px;
-  height: 30px;
+.step-btn {
+  width: 29px;
+  height: 29px;
   border: 0;
   border-radius: 7px;
-  background: var(--brand-tint);
+  background: var(--surface);
   color: var(--brand);
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
   line-height: 1;
   cursor: pointer;
@@ -545,7 +603,8 @@ button { font: inherit; color: inherit; }
   place-items: center;
   padding-bottom: 2px;
 }
-.stepper button:disabled { opacity: .35; cursor: default; }
+.step-btn:hover:not(:disabled) { background: var(--brand-tint); }
+.step-btn:disabled { opacity: .3; cursor: default; }
 .stepper output {
   min-width: 28px;
   text-align: center;
@@ -589,14 +648,9 @@ button { font: inherit; color: inherit; }
   align-items: center;
   gap: 10px;
 }
-.sendbar-sum { flex: 1; min-width: 0; line-height: 1.4; }
-.sendbar-count { font-size: 12.5px; font-weight: 600; color: var(--text-soft); }
-.sendbar-total {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--brand);
-  font-variant-numeric: tabular-nums;
-}
+.sendbar-sum { flex: 1; min-width: 0; line-height: 1.35; }
+.sendbar-count { font-size: 15px; font-weight: 700; color: var(--brand); }
+.sendbar-hint { font-size: 11.5px; font-weight: 500; color: var(--text-soft); }
 
 .send-btn {
   flex: none;
@@ -636,6 +690,6 @@ button { font: inherit; color: inherit; }
   .sheet { box-shadow: none; }
   .order a { color: #fff; }
   .photo-btn, .photo-hint, .lightbox { display: none !important; }
-  .line { grid-template-columns: 1fr auto; }
+  .line { grid-template-columns: 1fr auto auto; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }

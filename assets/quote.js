@@ -1,6 +1,8 @@
 /* ============================================================
-   صفحة طلب عرض السعر — كل شيء بالكبس، والملاحظات فقط كتابة
-   ترسل الطلب مرتّباً على واتساب الشركة
+   صفحة "اعرف سعرك الخاص"
+   • بدون أسعار — السعر النهائي يعتمد على تفاصيل الطلب
+   • كل التفاصيل قوائم منسدلة، والكتابة فقط في الملاحظات
+   • الطلب يوصل مرتّباً على واتساب الشركة
    ============================================================ */
 
 (function () {
@@ -34,25 +36,20 @@
     {
       id: "branches",
       label: "عدد الفروع",
-      options: ["فرع واحد", "فرعان", "3 فروع", "4 فروع", "5 فروع", "6–10 فروع", "أكثر من 10 فروع"]
+      options: ["فرع واحد", "فرعان", "ثلاثة فروع", "أربعة فروع", "خمسة فروع",
+                "من ستة إلى عشرة فروع", "أكثر من عشرة فروع"]
     },
     {
       id: "frequency",
-      label: "عدد مرات التوصيل في الأسبوع",
-      options: [
-        { label: "يومياً", weekly: 6 },
-        { label: "5 مرات", weekly: 5 },
-        { label: "4 مرات", weekly: 4 },
-        { label: "3 مرات", weekly: 3 },
-        { label: "مرتان", weekly: 2 },
-        { label: "مرة واحدة", weekly: 1 },
-        { label: "حسب الطلب", weekly: 0 }
-      ]
+      label: "دورية التوصيل",
+      options: ["يومياً", "خمس مرات أسبوعياً", "أربع مرات أسبوعياً",
+                "ثلاث مرات أسبوعياً", "مرتان أسبوعياً", "مرة واحدة أسبوعياً",
+                "حسب الطلب"]
     },
     {
       id: "time",
       label: "وقت التوصيل المفضّل",
-      options: ["6–9 صباحاً", "9–12 ظهراً", "12–4 عصراً", "4–8 مساءً", "أي وقت"]
+      options: ["الصباح الباكر", "قبل الظهر", "بعد الظهر", "المساء", "أي وقت"]
     },
     {
       id: "start",
@@ -61,18 +58,20 @@
     }
   ];
 
+  var PLACEHOLDER = "— اختر —";
+
   /* حالة الطلب */
   var picks = {};   // itemId -> { qty, packIndex }
-  var answers = {}; // questionId -> label
+  var answers = {}; // questionId -> value
 
   var itemsRoot     = document.getElementById("items");
   var questionsRoot = document.getElementById("questions");
   var notesEl       = document.getElementById("notes");
   var countEl       = document.getElementById("sb-count");
-  var totalEl       = document.getElementById("sb-total");
+  var hintEl        = document.getElementById("sb-hint");
   var sendBtn       = document.getElementById("send");
 
-  /* ---------- بناء قائمة الأصناف ---------- */
+  /* ---------- قائمة الأصناف ---------- */
 
   window.CATALOGUE.forEach(function (group) {
     var wrap = document.createElement("div");
@@ -89,12 +88,6 @@
 
     itemsRoot.appendChild(wrap);
   });
-
-  function unitPrice(item, packIndex) {
-    return item.unit === "piece"
-      ? item.pricePerPiece
-      : window.packPrice(item, item.packs[packIndex]);
-  }
 
   function unitLabel(item, packIndex) {
     return item.unit === "piece" ? "حبة" : "كيس " + window.packLabel(item.packs[packIndex]);
@@ -118,35 +111,26 @@
     name.textContent = item.name;
     main.appendChild(name);
 
-    var meta = document.createElement("div");
-    meta.className = "pick-meta";
-    meta.innerHTML = item.unit === "piece"
-      ? "<bdi>" + window.money(item.pricePerPiece) + "</bdi> د للحبة"
-      : "<bdi>" + window.money(item.pricePerKg) + "</bdi> د للكيلو";
-    main.appendChild(meta);
-
-    // اختيار وزن الكيس عند توفّر أكثر من وزن
-    var packChips = null;
+    // اختيار الحجم: قائمة منسدلة عند توفّر أكثر من حجم، وإلا نص ثابت
     if (item.packs && item.packs.length > 1) {
-      packChips = document.createElement("div");
-      packChips.className = "pack-chips";
+      var sel = document.createElement("select");
+      sel.className = "size-select";
+      sel.setAttribute("aria-label", "حجم كيس " + item.name);
       item.packs.forEach(function (g, idx) {
-        var chip = document.createElement("button");
-        chip.type = "button";
-        chip.className = "pack-chip";
-        chip.textContent = window.packLabel(g);
-        chip.setAttribute("aria-pressed", String(idx === 0));
-        chip.addEventListener("click", function () {
-          picks[item.id].packIndex = idx;
-          Array.prototype.forEach.call(packChips.children, function (c, i) {
-            c.setAttribute("aria-pressed", String(i === idx));
-          });
-          refreshRow();
-          refreshBar();
-        });
-        packChips.appendChild(chip);
+        var opt = document.createElement("option");
+        opt.value = String(idx);
+        opt.textContent = "كيس " + window.packLabel(g);
+        sel.appendChild(opt);
       });
-      main.appendChild(packChips);
+      sel.addEventListener("change", function () {
+        picks[item.id].packIndex = Number(sel.value);
+      });
+      main.appendChild(sel);
+    } else {
+      var fixed = document.createElement("div");
+      fixed.className = "pick-size";
+      fixed.textContent = unitLabel(item, 0);
+      main.appendChild(fixed);
     }
 
     row.appendChild(main);
@@ -157,6 +141,7 @@
 
     var minus = document.createElement("button");
     minus.type = "button";
+    minus.className = "step-btn";
     minus.textContent = "−";
     minus.setAttribute("aria-label", "إنقاص كمية " + item.name);
 
@@ -165,6 +150,7 @@
 
     var plus = document.createElement("button");
     plus.type = "button";
+    plus.className = "step-btn";
     plus.textContent = "+";
     plus.setAttribute("aria-label", "زيادة كمية " + item.name);
 
@@ -179,82 +165,68 @@
     function bump(d) {
       var s = picks[item.id];
       s.qty = Math.max(0, Math.min(999, s.qty + d));
-      refreshRow();
-      refreshBar();
-    }
-
-    function refreshRow() {
-      var s = picks[item.id];
       out.textContent = String(s.qty);
       minus.disabled = s.qty === 0;
       row.classList.toggle("is-on", s.qty > 0);
-      meta.innerHTML = s.qty > 0
-        ? unitLabel(item, s.packIndex) + " — <bdi>" +
-          window.money(unitPrice(item, s.packIndex) * s.qty) + "</bdi> د"
-        : (item.unit === "piece"
-            ? "<bdi>" + window.money(item.pricePerPiece) + "</bdi> د للحبة"
-            : "<bdi>" + window.money(item.pricePerKg) + "</bdi> د للكيلو");
+      refreshBar();
     }
 
-    refreshRow();
+    minus.disabled = true;
     return row;
   }
 
-  /* ---------- بناء أسئلة التوصيل ---------- */
+  /* ---------- تفاصيل التوصيل: قوائم منسدلة ---------- */
 
   QUESTIONS.forEach(function (q) {
-    var block = document.createElement("div");
-    block.className = "q-block";
-    block.dataset.qid = q.id;
-    if (q.dependsOn) block.hidden = true;
+    var field = document.createElement("div");
+    field.className = "field";
+    field.dataset.qid = q.id;
+    if (q.dependsOn) field.hidden = true;
 
-    var label = document.createElement("div");
-    label.className = "q-label";
+    var label = document.createElement("label");
+    label.className = "field-label";
+    label.setAttribute("for", "q-" + q.id);
     label.textContent = q.label;
-    block.appendChild(label);
+    field.appendChild(label);
 
-    var chips = document.createElement("div");
-    chips.className = "chips";
+    var sel = document.createElement("select");
+    sel.className = "field-select is-empty";
+    sel.id = "q-" + q.id;
+
+    var ph = document.createElement("option");
+    ph.value = "";
+    ph.textContent = PLACEHOLDER;
+    sel.appendChild(ph);
 
     q.options.forEach(function (opt) {
-      var text = typeof opt === "string" ? opt : opt.label;
-      var chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = "chip";
-      chip.innerHTML = window.bidiSafe(text);
-      chip.setAttribute("aria-pressed", "false");
-      chip.addEventListener("click", function () {
-        var isOn = chip.getAttribute("aria-pressed") === "true";
-        Array.prototype.forEach.call(chips.children, function (c) {
-          c.setAttribute("aria-pressed", "false");
-        });
-        if (isOn) {
-          delete answers[q.id];
-        } else {
-          chip.setAttribute("aria-pressed", "true");
-          answers[q.id] = text;
-        }
-        applyDependencies();
-        refreshBar();
-      });
-      chips.appendChild(chip);
+      var o = document.createElement("option");
+      o.value = opt;
+      o.textContent = opt;
+      sel.appendChild(o);
     });
 
-    block.appendChild(chips);
-    questionsRoot.appendChild(block);
+    sel.addEventListener("change", function () {
+      if (sel.value) answers[q.id] = sel.value;
+      else delete answers[q.id];
+      sel.classList.toggle("is-empty", !sel.value);
+      applyDependencies();
+    });
+
+    field.appendChild(sel);
+    questionsRoot.appendChild(field);
   });
 
   function applyDependencies() {
     QUESTIONS.forEach(function (q) {
       if (!q.dependsOn) return;
-      var block = questionsRoot.querySelector('[data-qid="' + q.id + '"]');
+      var field = questionsRoot.querySelector('[data-qid="' + q.id + '"]');
       var show = answers[q.dependsOn.id] === q.dependsOn.value;
-      block.hidden = !show;
-      if (!show && answers[q.id]) {
+      field.hidden = !show;
+      if (!show) {
         delete answers[q.id];
-        Array.prototype.forEach.call(block.querySelectorAll(".chip"), function (c) {
-          c.setAttribute("aria-pressed", "false");
-        });
+        var sel = field.querySelector("select");
+        sel.value = "";
+        sel.classList.add("is-empty");
       }
     });
   }
@@ -266,41 +238,23 @@
     window.allItems().forEach(function (item) {
       var s = picks[item.id];
       if (!s || s.qty === 0) return;
-      lines.push({
-        item: item,
-        qty: s.qty,
-        unit: unitLabel(item, s.packIndex),
-        total: unitPrice(item, s.packIndex) * s.qty
-      });
+      lines.push({ name: item.name, qty: s.qty, unit: unitLabel(item, s.packIndex) });
     });
     return lines;
   }
 
-  function weeklyFactor() {
-    var q = QUESTIONS.filter(function (x) { return x.id === "frequency"; })[0];
-    var chosen = answers.frequency;
-    var hit = q.options.filter(function (o) { return o.label === chosen; })[0];
-    return hit ? hit.weekly : 0;
-  }
-
   function refreshBar() {
-    var lines = selectedLines();
-    var total = lines.reduce(function (a, l) { return a + l.total; }, 0);
-
-    countEl.textContent = lines.length
-      ? lines.length + (lines.length === 1 ? " صنف مختار" : " أصناف مختارة")
+    var n = selectedLines().length;
+    countEl.textContent = n
+      ? n + (n === 1 ? " صنف مختار" : " أصناف مختارة")
       : "لم تختر أي صنف بعد";
-    totalEl.innerHTML = lines.length
-      ? "<bdi>" + window.money(total) + "</bdi> د للتوصيلة"
-      : "";
-    sendBtn.disabled = lines.length === 0;
+    hintEl.textContent = n ? "جاهز للإرسال" : "اختر صنف واحد على الأقل";
+    sendBtn.disabled = n === 0;
   }
 
-  /* ---------- بناء رسالة الواتساب ---------- */
+  /* ---------- رسالة الواتساب ---------- */
 
   function buildMessage() {
-    var lines = selectedLines();
-    var total = lines.reduce(function (a, l) { return a + l.total; }, 0);
     var out = ["طلب عرض سعر — ألياف الشمال", ""];
 
     var details = [];
@@ -308,31 +262,19 @@
       if (answers[q.id]) details.push(q.label + ": " + answers[q.id]);
     });
     if (details.length) {
-      out.push("• تفاصيل المنشأة والتوصيل");
+      out.push("• المنشأة والتوصيل");
       out = out.concat(details, "");
     }
 
-    out.push("• الأصناف المطلوبة (لكل توصيلة)");
-    lines.forEach(function (l) {
-      out.push(
-        "- " + l.item.name + ": " + l.qty + " × " + l.unit +
-        " = " + window.money(l.total) + " د"
-      );
+    out.push("• الأصناف والكميات المطلوبة في كل توصيلة");
+    selectedLines().forEach(function (l) {
+      out.push("- " + l.name + ": " + l.qty + " × " + l.unit);
     });
-    out.push("");
-
-    out.push("التقدير الأولي للتوصيلة: " + window.money(total) + " د");
-    var w = weeklyFactor();
-    if (w > 0) {
-      out.push("التقدير الأسبوعي: " + window.money(total * w) + " د");
-    }
-    out.push("(تقدير مبدئي حسب أسعار القائمة وغير ملزم)");
 
     var notes = (notesEl.value || "").trim();
-    if (notes) {
-      out.push("", "• ملاحظات", notes);
-    }
+    if (notes) out.push("", "• ملاحظات", notes);
 
+    out.push("", "أرجو تزويدي بعرض سعر مخصّص.");
     return out.join("\n");
   }
 

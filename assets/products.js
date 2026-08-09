@@ -86,15 +86,6 @@ window.packPrice = function (item, grams) {
   return item.pricePerKg * grams / 1000;
 };
 
-/** يعزل النطاقات الرقمية (6–10، 9–12) حتى لا ينعكس ترتيبها داخل النص العربي */
-window.bidiSafe = function (text) {
-  return String(text)
-    .replace(/[&<>]/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c];
-    })
-    .replace(/\d+(?:\s?[–—:\-]\s?\d+)+/g, "<bdi>$&</bdi>");
-};
-
 /** كل أصناف الكتالوج في مصفوفة واحدة */
 window.allItems = function () {
   return window.CATALOGUE.reduce(function (acc, g) {

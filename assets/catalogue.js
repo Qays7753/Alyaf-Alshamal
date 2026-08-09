@@ -46,42 +46,33 @@
     if (btn) li.appendChild(btn);
     else li.classList.add("no-photo");
 
-    // 2) الاسم + أسعار الأكياس
-    var main = document.createElement("div");
-    main.className = "line-main";
-
+    // 2) اسم الصنف
     var name = document.createElement("div");
     name.className = "name";
     name.textContent = item.name;
-    main.appendChild(name);
+    li.appendChild(name);
 
-    var packs = document.createElement("div");
-    packs.className = "packs";
-
+    // 3) عمود الأحجام المتوفّرة
+    var sizes = document.createElement("div");
+    sizes.className = "sizes";
     if (item.unit === "piece") {
-      packs.innerHTML = "<span>تُباع بالحبة</span>";
+      sizes.innerHTML = "<span class='size'>حبة</span>";
     } else {
       item.packs.forEach(function (g) {
         var s = document.createElement("span");
-        s.innerHTML =
-          "كيس <bdi>" + window.packLabel(g) + "</bdi> — <bdi>" +
-          window.money(window.packPrice(item, g)) + "</bdi> د";
-        packs.appendChild(s);
+        s.className = "size";
+        s.innerHTML = "<bdi>" + window.packLabel(g) + "</bdi>";
+        sizes.appendChild(s);
       });
     }
-    main.appendChild(packs);
-    li.appendChild(main);
+    li.appendChild(sizes);
 
-    // 3) سعر الكيلو
+    // 4) سعر الكيلو، والوحدة على الجنب
     var price = document.createElement("div");
     price.className = "price";
-    if (item.unit === "piece") {
-      price.innerHTML =
-        "<b>" + window.money(item.pricePerPiece) + "</b><small>د / حبة</small>";
-    } else {
-      price.innerHTML =
-        "<b>" + window.money(item.pricePerKg) + "</b><small>د / كغ</small>";
-    }
+    price.innerHTML = item.unit === "piece"
+      ? "<b>" + window.money(item.pricePerPiece) + "</b> <small>د/حبة</small>"
+      : "<b>" + window.money(item.pricePerKg) + "</b> <small>د/كغ</small>";
     li.appendChild(price);
 
     return li;
