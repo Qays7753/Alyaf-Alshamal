@@ -17,20 +17,26 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="ألياف الشمال — اعرف سعرك الخاص">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://alyaf-alshamal-prices.pages.dev/quote.html">
+<meta name="theme-color" content="#0E3D24">
 
-<link rel="icon" href="assets/logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png">
+<link rel="preload" href="assets/fonts/ibm-plex-arabic-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ibm-plex-arabic-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 
 <body class="has-sendbar">
+<a class="skip-link" href="#items">تخطَّ إلى اختيار الأصناف</a>
 <main class="sheet">
 
   <header class="masthead compact">
     <a class="back-link" href="index.html">→ الأسعار</a>
-    <img src="assets/logo.png" alt="ألياف الشمال">
+    <picture>
+      <source srcset="assets/logo.webp" type="image/webp">
+      <img src="assets/logo.png" alt="ألياف الشمال">
+    </picture>
     <h1 class="wordmark">اعرف سعرك الخاص</h1>
     <p class="descriptor">حدّد طلبك بالكبس، وبنرجعلك بسعر مخصّص لمطبخك</p>
   </header>
@@ -95,8 +101,8 @@
   </div>
 </div>
 
-<script src="assets/products.js"></script>
-<script src="assets/gallery.js"></script>
-<script src="assets/quote.js"></script>
+<script src="assets/products.js" defer></script>
+<script src="assets/gallery.js" defer></script>
+<script src="assets/quote.js" defer></script>
 </body>
 </html>
