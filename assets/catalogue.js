@@ -26,14 +26,6 @@
     heading.textContent = group.group;
     section.appendChild(heading);
 
-    // سطر عناوين الأعمدة: يوضّح للزبون معنى عمود التغليف
-    var head = document.createElement("div");
-    head.className = "line-head";
-    head.innerHTML =
-      (showPhotoCol ? "<span></span>" : "") +
-      "<span>الصنف</span><span>التغليف</span><span>السعر / كغ</span>";
-    section.appendChild(head);
-
     var list = document.createElement("ul");
 
     group.items.forEach(function (item) {
@@ -62,28 +54,30 @@
       li.appendChild(window.Gallery.createButton(item) || document.createElement("span"));
     }
 
-    // 2) اسم الصنف
+    // 2) الاسم، وتحته التغليف — العمود المرن يأخذ كل المساحة المتبقية
+    var main = document.createElement("div");
+    main.className = "line-main";
+
     var name = document.createElement("div");
     name.className = "name";
     name.textContent = item.name;
-    li.appendChild(name);
+    main.appendChild(name);
 
-    // 3) عمود الأحجام المتوفّرة
-    var sizes = document.createElement("div");
-    sizes.className = "sizes";
+    var packs = document.createElement("div");
+    packs.className = "packs";
     if (item.unit === "piece") {
-      sizes.innerHTML = "<span class='size'>حبة</span>";
+      packs.textContent = "تُباع بالحبة";
     } else {
-      item.packs.forEach(function (g) {
-        var s = document.createElement("span");
-        s.className = "size";
-        s.innerHTML = "<bdi>" + window.packLabel(g) + "</bdi>";
-        sizes.appendChild(s);
-      });
+      packs.innerHTML =
+        (item.packs.length > 1 ? "أكياس " : "كيس ") +
+        item.packs.map(function (g) {
+          return "<bdi>" + window.packLabel(g) + "</bdi>";
+        }).join(" · ");
     }
-    li.appendChild(sizes);
+    main.appendChild(packs);
+    li.appendChild(main);
 
-    // 4) سعر الكيلو، والوحدة على الجنب
+    // 3) سعر الكيلو، والوحدة على الجنب
     var price = document.createElement("div");
     price.className = "price";
     price.innerHTML = item.unit === "piece"

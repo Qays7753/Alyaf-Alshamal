@@ -102,7 +102,10 @@ button { font: inherit; color: inherit; }
   background: rgba(255, 255, 255, .13);
   border: 1px solid rgba(255, 255, 255, .25);
   border-radius: 999px;
-  padding: 5px 12px;
+  padding: 0 14px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* ---------- الكتالوج ---------- */
@@ -132,50 +135,30 @@ button { font: inherit; color: inherit; }
 
 .group ul { list-style: none; }
 
-/* أعمدة ثابتة العرض حتى تبقى كل الصفوف على استقامة واحدة */
-.line, .line-head {
+/* صف المنتج: صورة مصغّرة | الاسم والتغليف | سعر الكيلو
+   عرض الصورة والسعر ثابت، والباقي كله للاسم — يبقى الصف مستقيماً
+   بين الصفوف ويعمل بنفس الكفاءة قبل إضافة الصور وبعدها. */
+.line {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr) 54px 92px;
+  grid-template-columns: 44px minmax(0, 1fr) 92px;
   align-items: center;
   gap: 9px;
-  padding: 10px 8px;
+  padding: 9px 8px;
+  border-radius: 8px;
 }
-.no-photo-col .line,
-.no-photo-col .line-head { grid-template-columns: minmax(0, 1fr) 54px 92px; }
-
-.line { border-radius: 8px; }
+.no-photo-col .line { grid-template-columns: minmax(0, 1fr) 92px; }
 .line:nth-child(even) { background: var(--band); }
 
-/* سطر عناوين الأعمدة */
-.line-head {
-  padding-top: 8px;
-  padding-bottom: 7px;
-  font-size: 10.5px;
-  font-weight: 600;
-  color: #93A09A;
-  border-bottom: 1px solid var(--rule);
-  margin-bottom: 2px;
-}
-.line-head span:nth-last-child(2) { text-align: center; }
-.line-head span:last-child { text-align: left; }
+.line-main { min-width: 0; }
+.name { font-size: 14.5px; font-weight: 600; line-height: 1.35; }
 
-.name { font-size: 14.5px; font-weight: 600; min-width: 0; }
-
-/* عمود التغليف */
-.sizes { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-.size {
-  font-size: 11px;
-  font-weight: 600;
+.packs {
+  font-size: 11.5px;
+  font-weight: 500;
   color: var(--text-soft);
-  background: var(--paper);
-  border: 1px solid var(--rule);
-  border-radius: 5px;
-  padding: 2px 7px;
-  white-space: nowrap;
-  line-height: 1.5;
+  margin-top: 1px;
 }
-.line:nth-child(odd) .size { background: var(--band); }
-.size bdi { font-weight: 700; }
+.packs bdi { font-weight: 700; }
 
 /* سعر الكيلو مع الوحدة على جنبه */
 .price {
@@ -203,8 +186,8 @@ button { font: inherit; color: inherit; }
 /* ---------- كبسة الصورة ---------- */
 .photo-btn {
   position: relative;
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   padding: 0;
   border: 1px solid var(--rule);
   border-radius: 10px;
@@ -216,7 +199,7 @@ button { font: inherit; color: inherit; }
   flex: none;
 }
 .photo-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.photo-btn svg { width: 20px; height: 20px; color: #9AA69E; }
+.photo-btn svg { width: 20px; height: 20px; color: #6B7280; }
 .photo-btn.is-empty { background: var(--surface); border-style: dashed; }
 .photo-btn:hover { border-color: var(--brand); }
 .photo-btn:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
@@ -280,9 +263,9 @@ button { font: inherit; color: inherit; }
   border: 0;
   background: rgba(255, 255, 255, .16);
   color: #fff;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
   line-height: 1;
@@ -303,8 +286,8 @@ button { font: inherit; color: inherit; }
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: 0;
   border-radius: 50%;
   background: rgba(255, 255, 255, .93);
@@ -396,9 +379,8 @@ button { font: inherit; color: inherit; }
   color: #fff;
 }
 .dual-card.is-primary { background: var(--brand); }
-.dual-card.is-sample  { background: var(--whatsapp); }
-.dual-card.is-sample:hover { background: var(--whatsapp-hov); }
-.dual-card.is-primary:hover { background: var(--brand-soft); }
+.dual-card.is-sample  { background: var(--brand-soft); }
+.dual-card.is-primary:hover, .dual-card.is-sample:hover { background: #1E6B40; }
 .dual-card svg { width: 26px; height: 26px; margin-bottom: 2px; }
 .dual-title { font-size: 15px; font-weight: 700; line-height: 1.3; }
 .dual-sub { font-size: 11.5px; font-weight: 500; opacity: .88; line-height: 1.45; }
@@ -433,7 +415,7 @@ button { font: inherit; color: inherit; }
   font-size: 11.5px;
   color: var(--text-soft);
 }
-.direct-note a { color: var(--whatsapp-hov); font-weight: 700; text-decoration: none; }
+.direct-note a { color: #127C3C; font-weight: 700; text-decoration: underline; }
 .direct-note a:hover { text-decoration: underline; }
 
 /* ---------- التذييل ---------- */
@@ -545,14 +527,14 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
   padding-inline-end: 38px;
   background-position: left 13px center;
 }
-.field-select.is-empty { color: #93A09A; font-weight: 500; }
+.field-select.is-empty { color: #6B7280; font-weight: 500; }
 .field-select:not(.is-empty) { border-color: rgba(14, 61, 36, .35); background-color: var(--brand-tint); }
 
 /* ---------- صفوف الأصناف في صفحة الطلب ---------- */
 
 .pick {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr) auto;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
   align-items: center;
   gap: 10px;
   padding: 9px 8px;
@@ -596,10 +578,10 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
   padding: 3px;
 }
 .step-btn {
-  width: 29px;
-  height: 29px;
+  width: 44px;
+  height: 44px;
   border: 0;
-  border-radius: 7px;
+  border-radius: 9px;
   background: var(--surface);
   color: var(--brand);
   font-size: 17px;
@@ -674,7 +656,7 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
   gap: 7px;
 }
 .send-btn:hover:not(:disabled) { background: var(--whatsapp-hov); }
-.send-btn:disabled { background: #C9D2CB; cursor: default; }
+.send-btn:disabled { background: #C9D2CB; color: #3F4A44; cursor: default; }
 .send-btn svg { width: 18px; height: 18px; }
 
 .page-tail { padding: 22px 16px 30px; }
@@ -688,6 +670,17 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
   color: var(--text-soft);
 }
 
+/* الشاشات الضيقة جداً: نضغط الحشوات قبل أن ينهار عمود الاسم */
+@media (max-width: 349px) {
+  body { padding: 12px 8px 30px; }
+  .catalogue { padding-inline: 10px; }
+  .line { grid-template-columns: 40px minmax(0, 1fr) 82px; gap: 7px; padding: 9px 6px; }
+  .photo-btn { width: 40px; height: 40px; }
+  .name { font-size: 14px; }
+  .price b { font-size: 17px; min-width: 42px; }
+  .service-grid, .dual { grid-template-columns: 1fr; }
+}
+
 @media (min-width: 600px) {
   body { padding: 32px 20px 60px; }
 }
@@ -697,6 +690,6 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
   .sheet { box-shadow: none; }
   .direct-tel { color: var(--brand); }
   .photo-btn, .photo-hint, .lightbox { display: none !important; }
-  .line, .line-head { grid-template-columns: minmax(0, 1fr) 54px 92px; }
+  .line { grid-template-columns: minmax(0, 1fr) 92px; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }

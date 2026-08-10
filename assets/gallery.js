@@ -33,8 +33,8 @@
       thumb.alt = "";
       thumb.loading = "lazy";
       thumb.decoding = "async";
-      thumb.width = 46;
-      thumb.height = 46;
+      thumb.width = 44;
+      thumb.height = 44;
       btn.appendChild(thumb);
       if (images.length > 1) {
         var badge = document.createElement("span");
