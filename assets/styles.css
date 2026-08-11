@@ -202,13 +202,6 @@ button { font: inherit; color: inherit; }
 .line-main { min-width: 0; }
 .name { font-size: 14.5px; font-weight: 600; line-height: 1.35; }
 
-.packs {
-  font-size: 11.5px;
-  font-weight: 400;
-  color: var(--text-soft);
-  margin-top: 1px;
-}
-.packs bdi { font-weight: 700; }
 
 /* سعر الكيلو مع الوحدة على جنبه */
 .price {
@@ -731,17 +724,6 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
   margin-top: 1px;
 }
 
-.size-select {
-  margin-top: 5px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  min-height: 44px;
-  padding: 5px 10px;
-  padding-inline-end: 27px;
-  background-position: left 8px center;
-  background-size: 13px 13px;
-}
 
 .stepper {
   display: flex;
@@ -769,6 +751,34 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
 }
 .step-btn:hover:not(:disabled) { background: var(--brand-tint); }
 .step-btn:disabled { opacity: .3; cursor: default; }
+
+/* خانة الكمية: يقدر يكتب 30 مرة وحدة بدل ثلاثين كبسة */
+.step-input {
+  width: 46px;
+  height: 38px;
+  border: 0;
+  background: none;
+  text-align: center;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  padding: 0;
+  -moz-appearance: textfield;
+}
+.step-input::-webkit-outer-spin-button,
+.step-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.step-input:focus { outline: 2px solid var(--brand); outline-offset: -1px; border-radius: 6px; }
+
+.step-unit {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-soft);
+  padding-inline-end: 6px;
+  white-space: nowrap;
+}
 .stepper output {
   min-width: 28px;
   text-align: center;
@@ -849,8 +859,13 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
 @media (max-width: 349px) {
   body { padding: 12px 8px 30px; }
   .catalogue { padding-inline: 10px; }
+  .steps { padding-inline: 10px; }
   .line { grid-template-columns: 44px minmax(0, 1fr) 82px; gap: 7px; padding: 9px 6px; }
   .name { font-size: 14px; }
+  /* على الشاشات الضيقة ينزل العدّاد تحت الاسم بدل أن يزاحمه */
+  .pick { grid-template-columns: 44px minmax(0, 1fr); gap: 8px; }
+  .pick.no-photo { grid-template-columns: minmax(0, 1fr); }
+  .pick .stepper { grid-column: 1 / -1; justify-self: start; margin-top: 6px; }
   .price b { font-size: 17px; min-width: 42px; }
   .service-grid, .dual { grid-template-columns: 1fr; }
 }

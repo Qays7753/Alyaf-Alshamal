@@ -86,6 +86,13 @@ window.packPrice = function (item, grams) {
   return item.pricePerKg * grams / 1000;
 };
 
+/** وحدة البيع الظاهرة للزبون: الكيلو لكل الأصناف عدا ما يُباع بالحبة.
+    أحجام الأكياس في packs تفصيلة تشغيلية للتعبئة، لا تُعرض في الموقع
+    حتى لا تختلط على الزبون بوحدة التسعير. */
+window.unitOf = function (item) {
+  return item.unit === "piece" ? "حبة" : "كغ";
+};
+
 /** كل أصناف الكتالوج في مصفوفة واحدة */
 window.allItems = function () {
   return window.CATALOGUE.reduce(function (acc, g) {

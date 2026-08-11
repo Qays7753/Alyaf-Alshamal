@@ -54,28 +54,11 @@
       li.appendChild(window.Gallery.createButton(item) || document.createElement("span"));
     }
 
-    // 2) الاسم، وتحته التغليف — العمود المرن يأخذ كل المساحة المتبقية
-    var main = document.createElement("div");
-    main.className = "line-main";
-
+    // 2) اسم الصنف — بلا أي ذكر لأحجام التعبئة حتى تبقى وحدة واحدة
     var name = document.createElement("div");
     name.className = "name";
     name.textContent = item.name;
-    main.appendChild(name);
-
-    var packs = document.createElement("div");
-    packs.className = "packs";
-    if (item.unit === "piece") {
-      packs.textContent = "تُباع بالحبة";
-    } else {
-      packs.innerHTML =
-        (item.packs.length > 1 ? "أكياس " : "كيس ") +
-        item.packs.map(function (g) {
-          return "<bdi>" + window.packLabel(g) + "</bdi>";
-        }).join(" · ");
-    }
-    main.appendChild(packs);
-    li.appendChild(main);
+    li.appendChild(name);
 
     // 3) سعر الكيلو، والوحدة على الجنب
     var price = document.createElement("div");

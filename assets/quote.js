@@ -44,12 +44,9 @@
     itemsRoot.appendChild(wrap);
   });
 
-  function unitLabel(item, packIndex) {
-    return item.unit === "piece" ? "حبة" : "كيس " + window.packLabel(item.packs[packIndex]);
-  }
-
   function buildRow(item) {
-    picks[item.id] = { qty: 0, packIndex: 0 };
+    picks[item.id] = { qty: 0 };
+    var unit = window.unitOf(item);
 
     var row = document.createElement("div");
     row.className = "pick";
@@ -66,28 +63,10 @@
     name.textContent = item.name;
     main.appendChild(name);
 
-    var sizeSel = null;
-    if (item.packs && item.packs.length > 1) {
-      sizeSel = document.createElement("select");
-      sizeSel.className = "size-select";
-      sizeSel.setAttribute("aria-label", "حجم كيس " + item.name);
-      item.packs.forEach(function (g, idx) {
-        var o = document.createElement("option");
-        o.value = String(idx);
-        o.textContent = "كيس " + window.packLabel(g);
-        sizeSel.appendChild(o);
-      });
-      sizeSel.addEventListener("change", function () {
-        picks[item.id].packIndex = Number(sizeSel.value);
-        persist();
-      });
-      main.appendChild(sizeSel);
-    } else {
-      var fixed = document.createElement("div");
-      fixed.className = "pick-size";
-      fixed.textContent = unitLabel(item, 0);
-      main.appendChild(fixed);
-    }
+    var unitHint = document.createElement("div");
+    unitHint.className = "pick-size";
+    unitHint.textContent = item.unit === "piece" ? "بالحبة" : "بالكيلو";
+    main.appendChild(unitHint);
 
     row.appendChild(main);
 
@@ -100,8 +79,16 @@
     minus.textContent = "−";
     minus.setAttribute("aria-label", "إنقاص كمية " + item.name);
 
-    var out = document.createElement("output");
-    out.textContent = "0";
+    // خانة رقمية: الكميات الكبيرة تُكتب مرة واحدة بدل عشرات الكبسات
+    var field = document.createElement("input");
+    field.type = "number";
+    field.className = "step-input";
+    field.min = "0";
+    field.max = String(MAX_QTY);
+    field.step = "1";
+    field.value = "0";
+    field.setAttribute("inputmode", "numeric");
+    field.setAttribute("aria-label", "كمية " + item.name + " بالـ" + unit);
 
     var plus = document.createElement("button");
     plus.type = "button";
@@ -112,9 +99,24 @@
     minus.addEventListener("click", function () { bump(-1); });
     plus.addEventListener("click", function () { bump(1); });
 
+    field.addEventListener("focus", function () { field.select(); });
+    field.addEventListener("input", function () {
+      var v = parseInt(field.value, 10);
+      picks[item.id].qty = isNaN(v) ? 0 : Math.max(0, Math.min(MAX_QTY, v));
+      sync(true);
+      persist();
+    });
+    field.addEventListener("blur", function () { sync(); });
+
     stepper.appendChild(minus);
-    stepper.appendChild(out);
+    stepper.appendChild(field);
     stepper.appendChild(plus);
+
+    var unitTag = document.createElement("span");
+    unitTag.className = "step-unit";
+    unitTag.textContent = unit;
+    stepper.appendChild(unitTag);
+
     row.appendChild(stepper);
 
     function bump(d) {
@@ -126,16 +128,15 @@
       }
       s.qty = next;
       sync();
-      F.announce(item.name + ": " + s.qty);
+      F.announce(item.name + ": " + s.qty + " " + unit);
       persist();
     }
 
-    function sync() {
+    function sync(keepTyping) {
       var s = picks[item.id];
-      out.textContent = String(s.qty);
+      if (!keepTyping) field.value = String(s.qty);
       minus.disabled = s.qty === 0;
       row.classList.toggle("is-on", s.qty > 0);
-      if (sizeSel) sizeSel.value = String(s.packIndex);
       refreshBar();
     }
 
@@ -172,7 +173,6 @@
       Object.keys(saved.picks).forEach(function (id) {
         if (!picks[id] || !saved.picks[id]) return;   // صنف حُذف من القائمة
         picks[id].qty = saved.picks[id].qty || 0;
-        picks[id].packIndex = saved.picks[id].packIndex || 0;
         if (picks[id].qty > 0) any = true;
         rows[id]();
       });
@@ -184,7 +184,6 @@
     store.clear();
     Object.keys(picks).forEach(function (id) {
       picks[id].qty = 0;
-      picks[id].packIndex = 0;
       rows[id]();
     });
     Object.keys(answers).forEach(function (k) { delete answers[k]; });
@@ -202,7 +201,7 @@
     window.allItems().forEach(function (item) {
       var s = picks[item.id];
       if (!s || s.qty === 0) return;
-      lines.push({ name: item.name, qty: s.qty, unit: unitLabel(item, s.packIndex) });
+      lines.push({ name: item.name, qty: s.qty, unit: window.unitOf(item) });
     });
     return lines;
   }
@@ -233,9 +232,9 @@
     var a = F.answerLines(answers);
     if (a.length) out.push("• المنشأة والتوصيل"), out = out.concat(a, "");
 
-    out.push("• الأصناف والكميات");
+    out.push("• الأصناف والكميات المطلوبة في كل توصيلة");
     chosen().forEach(function (l) {
-      out.push("- " + l.name + ": " + l.qty + " × " + l.unit);
+      out.push("- " + l.name + ": " + l.qty + " " + l.unit);
     });
 
     var notes = notesOverride !== undefined ? notesOverride : (notesEl.value || "").trim();
