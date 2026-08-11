@@ -63,11 +63,6 @@
     name.textContent = item.name;
     main.appendChild(name);
 
-    var unitHint = document.createElement("div");
-    unitHint.className = "pick-size";
-    unitHint.textContent = item.unit === "piece" ? "بالحبة" : "بالكيلو";
-    main.appendChild(unitHint);
-
     row.appendChild(main);
 
     var stepper = document.createElement("div");

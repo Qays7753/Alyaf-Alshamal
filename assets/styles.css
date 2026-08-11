@@ -203,15 +203,18 @@ button { font: inherit; color: inherit; }
 .name { font-size: 14.5px; font-weight: 600; line-height: 1.35; }
 
 
-/* سعر الكيلو مع الوحدة على جنبه */
+/* سعر الكيلو مع الوحدة على جنبه.
+   عرض ثابت للرقم وللوحدة حتى تتطابق محاذاة كل الصفوف مهما اختلفت
+   الوحدة (د/كغ مقابل د/حبة) أو عدد خانات الرقم. */
 .price {
-  text-align: left;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
   white-space: nowrap;
   border-inline-start: 1px solid var(--rule);
   padding-inline-start: 12px;
 }
 .price b {
-  display: inline-block;
   min-width: 45px;
   text-align: right;
   font-size: 18px;
@@ -220,11 +223,55 @@ button { font: inherit; color: inherit; }
   font-variant-numeric: tabular-nums;
 }
 .price small {
+  min-width: 30px;
+  text-align: right;
   font-size: 10.5px;
   font-weight: 600;
   color: var(--text-soft);
-  margin-inline-start: 4px;
 }
+
+/* ---------- لوحة أحجام التعبئة (مطويّة) ---------- */
+.packs-panel {
+  margin-top: 26px;
+  border: 1px solid var(--rule);
+  border-radius: 11px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.packs-panel summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 14px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--brand);
+  cursor: pointer;
+  list-style: none;
+}
+.packs-panel summary::-webkit-details-marker { display: none; }
+.packs-chevron { font-size: 15px; transition: transform .2s ease; }
+.packs-panel[open] .packs-chevron { transform: rotate(180deg); }
+
+.packs-intro {
+  padding: 0 14px 10px;
+  font-size: 11.8px;
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+.packs-list { list-style: none; padding: 0 8px 10px; }
+.packs-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 6px;
+  font-size: 12.5px;
+  border-top: 1px solid var(--rule);
+}
+.packs-size { font-weight: 700; color: var(--brand); white-space: nowrap; }
 
 /* ---------- كبسة الصورة ---------- */
 .photo-btn {
@@ -753,11 +800,13 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
 .step-btn:disabled { opacity: .3; cursor: default; }
 
 /* خانة الكمية: يقدر يكتب 30 مرة وحدة بدل ثلاثين كبسة */
+/* تبدو كخانة إدخال فعلاً حتى يعرف الزبون أنه يقدر يكتب الرقم مباشرة */
 .step-input {
-  width: 46px;
+  width: 52px;
   height: 38px;
-  border: 0;
-  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 7px;
+  background: var(--surface);
   text-align: center;
   font: inherit;
   font-size: 16px;
@@ -772,11 +821,14 @@ select:focus-visible { outline: 2px solid var(--brand); outline-offset: 1px; bor
 .step-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .step-input:focus { outline: 2px solid var(--brand); outline-offset: -1px; border-radius: 6px; }
 
+/* عرض ثابت حتى تبقى كل العدّادات بنفس الحجم مهما اختلفت الوحدة */
 .step-unit {
+  min-width: 30px;
+  text-align: center;
   font-size: 11.5px;
   font-weight: 700;
   color: var(--text-soft);
-  padding-inline-end: 6px;
+  padding-inline-end: 4px;
   white-space: nowrap;
 }
 .stepper output {

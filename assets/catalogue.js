@@ -36,6 +36,49 @@
     root.appendChild(section);
   });
 
+  // لوحة أحجام التعبئة: مطويّة افتراضياً، فلا تزاحم الأسعار،
+  // ومفتوحة بكبسة لمن يريد مقارنة كل الأصناف دفعة واحدة
+  root.appendChild(buildPacksPanel());
+
+  function buildPacksPanel() {
+    var box = document.createElement("details");
+    box.className = "packs-panel";
+
+    var head = document.createElement("summary");
+    head.innerHTML = "أحجام التعبئة المتوفرة" +
+      '<span class="packs-chevron" aria-hidden="true">⌄</span>';
+    box.appendChild(head);
+
+    var intro = document.createElement("p");
+    intro.className = "packs-intro";
+    intro.textContent = "السعر للكيلو مهما كان حجم الكيس — الأحجام هاي شكل التعبئة اللي بتوصلك فيه.";
+    box.appendChild(intro);
+
+    var list = document.createElement("ul");
+    list.className = "packs-list";
+    window.allItems().forEach(function (item) {
+      var li = document.createElement("li");
+
+      var name = document.createElement("span");
+      name.textContent = item.name;
+
+      var size = document.createElement("span");
+      size.className = "packs-size";
+      size.innerHTML = item.unit === "piece"
+        ? "بالحبة"
+        : item.packs.map(function (g) {
+            return "<bdi>" + window.packLabel(g) + "</bdi>";
+          }).join(" · ");
+
+      li.appendChild(name);
+      li.appendChild(size);
+      list.appendChild(li);
+    });
+    box.appendChild(list);
+
+    return box;
+  }
+
   // تلميح الصور يظهر فقط بعد إضافة صور فعلية لأي صنف
   var hint = document.getElementById("photo-hint");
   if (hint) {
